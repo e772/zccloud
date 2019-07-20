@@ -4,8 +4,10 @@ spring:
   jackson:
     joda-date-time-format: yyyy-MM-dd HH:mm:ss
     date-format: yyyy-MM-dd HH:mm:ss
+  cache:
+    cache-names: mdc-cache
   datasource:
-    url: jdbc:mysql://paascloud-db-mysql:3306/paascloud_omc?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://paascloud-db-mysql:3306/paascloud_mdc?characterEncoding=utf8&useSSL=false
 
 liquibase:
   change-log: classpath:liquibase/index.xml
@@ -33,7 +35,7 @@ pagehelper:
 security:
   oauth2:
     client:
-      clientId: paascloud-client-omc
+      clientId: paascloud-client-mdc
       clientSecret: paascloudClientSecret
       access-token-uri: http://paascloud-gateway:7979/uac/oauth/token
       user-authorization-uri: http://paascloud-gateway:7979/uac/oauth/authorize
@@ -45,19 +47,24 @@ security:
 
 paascloud:
   enableSqlLogInterceptor: false
-  aliyun:
-    rocketMq:
-      enable: false
-      reliableMessageConsumer: false
-      reliableMessageProducer: false
-      instanceName: paascloud-provider-omc
-      consumerGroup: CID_OMC
-      producerGroup: PID_OMC
+  dingTalk:
+    webhookToken:
+      sendException: 7b0fcc73f3d2be1415c5d31e5b34100c689961454af15a61635749ba0d8*****
+      jobListener: 7b0fcc73f3d2be1415c5d31e5b34100c689961454af15a61635749ba0d8*****
   token:
     interceptor:
       enable: true
   zk:
-    zkAddressList: localhost:2181
+    zkAddressList: paascloud-provider-zk:2181
+  aliyun:
+    rocketMq:
+      enable: false
+      reliableMessageConsumer: false
+      reliableMessageProducer: true
+      namesrvAddr: paascloud-mq-rocket:9876
+      instanceName: paascloud-provider-mdc
+      consumerGroup: CID_MDC
+      producerGroup: PID_MDC
   oauth2:
     jwtSigningKey: paascloud
     client:
@@ -67,9 +74,3 @@ paascloud:
       clientSecret: ${security.oauth2.client.clientSecret}
       clientAuthenticationScheme: header
       tokenStore: jwt
-  alipay:
-    callback:
-      url: http://api.paascloud.net/omc/pay/alipayCallback
-    qrCode:
-      pcPath: E:/File/alipay/QRCode
-      qiniuPath: alipay/QRCode/
