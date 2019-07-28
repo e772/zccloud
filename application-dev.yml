@@ -18,7 +18,7 @@ spring:
     username: guest
     password: guest
   redis:
-    host: paascloud-db-redis
+    host: localhost
     password: paascloud@redis
     port: 6379
     timeout: 0
@@ -114,7 +114,7 @@ paascloud:
       accessKeyId: 'your aliyun accessKeyId'
       accessKeySecret: 'your aliyun accessKeySecret'
     rocketMq:
-      namesrvAddr: paascloud-mq-rocket:9876
+      namesrvAddr: localhost:5673
     sms:
       signName: 快乐学习网
       regionId: cn-beijing
